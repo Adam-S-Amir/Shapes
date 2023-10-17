@@ -1,0 +1,70 @@
+{
+	"metadata": {
+		"version": 4.6,
+		"type": "Object",
+		"generator": "Object3D.toJSON"
+	},
+	"geometries": [
+		{
+			"uuid": "21178451-4fc7-4ce2-a938-fe866d286252",
+			"type": "LatheGeometry",
+			"points": [
+				{
+					"x": 0,
+					"y": -0.5
+				},
+				{
+					"x": 0.5,
+					"y": 0
+				},
+				{
+					"x": 0,
+					"y": 0.5
+				}],
+			"segments": 12,
+			"phiStart": 0,
+			"phiLength": 6.283185307179586
+		}],
+	"materials": [
+		{
+			"uuid": "c9133aea-f0aa-4943-bf05-b6a918d10766",
+			"type": "MeshStandardMaterial",
+			"color": 16777215,
+			"roughness": 1,
+			"metalness": 0,
+			"emissive": 0,
+			"envMapIntensity": 1,
+			"side": 2,
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true,
+			"colorWrite": true,
+			"stencilWrite": false,
+			"stencilWriteMask": 255,
+			"stencilFunc": 519,
+			"stencilRef": 0,
+			"stencilFuncMask": 255,
+			"stencilFail": 7680,
+			"stencilZFail": 7680,
+			"stencilZPass": 7680
+		}],
+	"object": {
+		"uuid": "af967b46-233e-4d2a-ae2c-831b6377fe80",
+		"type": "Scene",
+		"name": "Scene",
+		"layers": 1,
+		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"up": [0,1,0],
+		"children": [
+			{
+				"uuid": "9c5fb501-64e6-4d55-92ad-f1dda24a52d9",
+				"type": "Mesh",
+				"name": "Lathe",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+				"up": [0,1,0],
+				"geometry": "21178451-4fc7-4ce2-a938-fe866d286252",
+				"material": "c9133aea-f0aa-4943-bf05-b6a918d10766"
+			}]
+	}
+}
