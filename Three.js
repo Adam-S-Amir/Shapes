@@ -1,5 +1,6 @@
 // Create a scene
 const scene = new THREE.Scene();
+var geometry, material, mesh;
 
 // Create a camera
 const camera = new THREE.PerspectiveCamera(
@@ -19,6 +20,14 @@ document.body.appendChild(renderer.domElement);
 const diamondGeometry = new THREE.Geometry();
 const icosahedronGeometry = new THREE.IcosahedronGeometry(1);
 const scale = 1.5; // Scale factor for increasing the size of the diamond
+geometry = new THREE.SphereGeometry(1);
+material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+
+mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
 diamondGeometry.vertices.push(
     new THREE.Vector3(0, 1 * scale, 0), // Top
@@ -140,6 +149,9 @@ function animate() {
     group.rotation.y += 0.01;
     group2.rotation.x += 0.01;
     group2.rotation.y += 0.01;
+
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.01;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
