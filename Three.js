@@ -1,10 +1,9 @@
 // Create a scene
 const scene = new THREE.Scene();
-var geometry, material, mesh;
 
 // Create a camera
 const camera = new THREE.PerspectiveCamera(
-    75, // field of view
+    65, // field of view
     window.innerWidth / window.innerHeight, // aspect ratio
     0.1, // near clipping plane
     1000 // far clipping plane
@@ -16,27 +15,26 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Create a geometry for the diamond
-const diamondGeometry = new THREE.Geometry();
-const icosahedronGeometry = new THREE.IcosahedronGeometry(1);
-const scale = 1.5; // Scale factor for increasing the size of the diamond
-geometry = new THREE.SphereGeometry(1);
-material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+// Set the background color of the renderer to grey
+renderer.setClearColor(0x888888); // You can change the color as needed
 
-mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+// Create a sphereGeometry for the diamond
+const diamondGeometry = new THREE.Geometry(2);
+const icosahedronGeometry = new THREE.IcosahedronGeometry(0.5);
+const sphereGeometry = new THREE.SphereGeometry(1.5);
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 diamondGeometry.vertices.push(
-    new THREE.Vector3(0, 1 * scale, 0), // Top
-    new THREE.Vector3(1 * scale, 0, 0), // Right
-    new THREE.Vector3(0, -1 * scale, 0), // Bottom
-    new THREE.Vector3(-1 * scale, 0, 0), // Left
-    new THREE.Vector3(0, 0, 1 * scale), // Front
-    new THREE.Vector3(0, 0, -1 * scale) // Back
+    new THREE.Vector3(0, 1, 0), // Top
+    new THREE.Vector3(1, 0, 0), // Right
+    new THREE.Vector3(0, -1, 0), // Bottom
+    new THREE.Vector3(-1, 0, 0), // Left
+    new THREE.Vector3(0, 0, 1), // Front
+    new THREE.Vector3(0, 0, -1) // Back
 );
+
 diamondGeometry.faces.push(
     new THREE.Face3(0, 1, 4), // Top-Right-Front
     new THREE.Face3(1, 2, 4), // Right-Bottom-Front
@@ -47,21 +45,22 @@ diamondGeometry.faces.push(
     new THREE.Face3(3, 2, 5), // Left-Bottom-Back
     new THREE.Face3(0, 3, 5) // Top-Left-Back
 );
+
 diamondGeometry.computeVertexNormals();
 
 // Create a material for the diamond
 // Wireframe
-const wireframeMaterial = new THREE.MeshBasicMaterial({
-    color: 0xfccb06, // Cyan color
+const diamondwireframeMaterial = new THREE.MeshBasicMaterial({
+    color: 0xfccb06,
     wireframe: true,
 });
 // Color in between wireframe
-const filledMaterial = new THREE.MeshBasicMaterial({
+const diamondfilledMaterial = new THREE.MeshBasicMaterial({
     color: 0xFF0000,
 });
 
 const icosahedronwireframeMaterial = new THREE.MeshBasicMaterial({
-    color: 0xd7263d, // Cyan color
+    color: 0xd7263d,
     wireframe: true,
 });
 // Color in between wireframe
@@ -69,38 +68,53 @@ const icosahedronfilledMaterial = new THREE.MeshBasicMaterial({
     color: 0x00FFFF,
 });
 
+const material = new THREE.MeshBasicMaterial({
+    color: 0x000080,
+    wireframe: true
+});
+
 // Move the icosahedron to the side of the diamondGeometry
 // icosahedronGeometry.translate(3, 0, 0);
 
-// Create the mesh for the icosahedron
+// Create the sphere for the icosahedron
 const icosahedronWireframeMesh = new THREE.Mesh(
     icosahedronGeometry,
     icosahedronwireframeMaterial
 );
 
-// Create the filled mesh using the diamond geometry and filled material
+// Create the filled sphere using the diamond sphereGeometry and filled material
 const icosahedronfilledMesh = new THREE.Mesh(
     icosahedronGeometry,
     icosahedronfilledMaterial
 );
 
-const wireframeMesh = new THREE.Mesh(diamondGeometry, wireframeMaterial);
+const diamondwireframeMesh = new THREE.Mesh(
+    diamondGeometry,
+    diamondwireframeMaterial
+);
 
-const filledMesh = new THREE.Mesh(diamondGeometry, filledMaterial);
+const diamondfilledMesh = new THREE.Mesh(
+    diamondGeometry,
+    diamondfilledMaterial
+);
+
+const sphere = new THREE.Mesh(
+    sphereGeometry,
+    material
+);
 
 // Group the wireframe and filled meshes together
-const group = new THREE.Group();
-const group2 = new THREE.Group();
+const diamond = new THREE.Group();
+const icosahedron = new THREE.Group();
 
-group.add(wireframeMesh);
-group.add(filledMesh);
+diamond.add(diamondwireframeMesh);
+diamond.add(diamondfilledMesh);
 
-group2.add(icosahedronWireframeMesh);
-group2.add(icosahedronfilledMesh);
+icosahedron.add(icosahedronWireframeMesh);
+icosahedron.add(icosahedronfilledMesh);
 
-// Add the group to the scene
-scene.add(group);
-scene.add(group2);
+// Add to the scene
+scene.add(sphere, diamond, icosahedron);
 
 // Variables to track cursor position
 let mouseX = 0;
@@ -134,24 +148,20 @@ function animate() {
     const targetRotationY = (mouseY / window.innerHeight) * Math.PI * 2;
 
     if (LeftClick) {
-        group.rotation.x += 2 * (targetRotationY - group.rotation.x);
-        group.rotation.y += 2 * (targetRotationX - group.rotation.y);
-        group2.rotation.x += 1 * (targetRotationY - group2.rotation.x);
-        group2.rotation.y += 1 * (targetRotationX - group2.rotation.y);
+        diamond.rotation.x += 1 * (targetRotationY - diamond.rotation.x);
+        diamond.rotation.y += 1 * (targetRotationX - diamond.rotation.y);
+        icosahedron.rotation.x += 1 * (targetRotationY - icosahedron.rotation.x);
+        icosahedron.rotation.y += 1 * (targetRotationX - icosahedron.rotation.y);
+        sphere.rotation.x += 1 * (targetRotationY - sphere.rotation.x);
+        sphere.rotation.y += 1 * (targetRotationX - sphere.rotation.y);
     } else {
-        group.rotation.x += 0.01;
-        group.rotation.y += 0.01;
-        group2.rotation.x += 0.02;
-        group2.rotation.y += 0.02;
+        diamond.rotation.x += 0.01;
+        diamond.rotation.y += 0.01;
+        icosahedron.rotation.x += 0.02;
+        icosahedron.rotation.y += 0.02;
+        sphere.rotation.x += 0.03;
+        sphere.rotation.y += 0.03;
     }
-
-    group.rotation.x += 0.01;
-    group.rotation.y += 0.01;
-    group2.rotation.x += 0.01;
-    group2.rotation.y += 0.01;
-
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
