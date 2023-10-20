@@ -68,25 +68,17 @@ const icosahedronfilledMaterial = new THREE.MeshBasicMaterial({
     color: 0x00FFFF,
 });
 
-const material = new THREE.MeshBasicMaterial({
+const spherewireframeMaterial = new THREE.MeshBasicMaterial({
     color: 0x000080,
     wireframe: true
+})
+
+const spherefilledMaterial = new THREE.MeshBasicMaterial({
+    color: 0x32CD32,
 });
 
 // Move the icosahedron to the side of the diamondGeometry
 // icosahedronGeometry.translate(3, 0, 0);
-
-// Create the sphere for the icosahedron
-const icosahedronWireframeMesh = new THREE.Mesh(
-    icosahedronGeometry,
-    icosahedronwireframeMaterial
-);
-
-// Create the filled sphere using the diamond sphereGeometry and filled material
-const icosahedronfilledMesh = new THREE.Mesh(
-    icosahedronGeometry,
-    icosahedronfilledMaterial
-);
 
 const diamondwireframeMesh = new THREE.Mesh(
     diamondGeometry,
@@ -98,21 +90,34 @@ const diamondfilledMesh = new THREE.Mesh(
     diamondfilledMaterial
 );
 
-const sphere = new THREE.Mesh(
+const icosahedronWireframeMesh = new THREE.Mesh(
+    icosahedronGeometry,
+    icosahedronwireframeMaterial
+);
+
+const icosahedronfilledMesh = new THREE.Mesh(
+    icosahedronGeometry,
+    icosahedronfilledMaterial
+);
+
+const sphereWireframeMesh = new THREE.Mesh(
     sphereGeometry,
-    material
+    spherewireframeMaterial
+);
+
+const spherefilledMesh = new THREE.Mesh(
+    sphereGeometry,
+    spherefilledMaterial
 );
 
 // Group the wireframe and filled meshes together
 const diamond = new THREE.Group();
 const icosahedron = new THREE.Group();
+const sphere = new THREE.Group();
 
-diamond.add(diamondwireframeMesh);
-diamond.add(diamondfilledMesh);
-
-icosahedron.add(icosahedronWireframeMesh);
-icosahedron.add(icosahedronfilledMesh);
-
+diamond.add(diamondwireframeMesh, diamondfilledMesh);
+icosahedron.add(icosahedronWireframeMesh, icosahedronfilledMesh);
+sphere.add(sphereWireframeMesh)
 // Add to the scene
 scene.add(sphere, diamond, icosahedron);
 
